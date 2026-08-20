@@ -18,6 +18,19 @@
         @input="onTitleInput"
       >
 
+      <ul>
+        <li v-for="todo in note.todos" :key="todo.id">
+          <TodoItemRow
+            :todo="todo"
+            @update:text="onTodoText(todo.id, $event)"
+            @toggle="toggleTodo(todo.id)"
+            @remove="removeTodo(todo.id)"
+            @blur="onTodoBlur(todo.id)"
+          />
+        </li>
+      </ul>
+      <button type="button" @click="addTodo">Добавить пункт</button>
+
       <div>
         <button type="button" @click="save">Сохранить</button>
         <button type="button" @click="requestCancel">Отменить редактирование</button>
@@ -54,6 +67,11 @@ const {
   cancelOpen,
   deleteOpen,
   onTitleInput,
+  onTodoText,
+  onTodoBlur,
+  toggleTodo,
+  addTodo,
+  removeTodo,
   save,
   requestCancel,
   confirmCancel,
