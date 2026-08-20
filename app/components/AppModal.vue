@@ -112,7 +112,7 @@ function onKeydown(event: KeyboardEvent): void {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal {
   position: fixed;
   inset: 0;
@@ -126,14 +126,16 @@ function onKeydown(event: KeyboardEvent): void {
 .modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(42, 38, 34, 0.35);
 }
 
 .modal__dialog {
   position: relative;
   width: min(100%, 420px);
   padding: 20px;
-  background: #fff;
+  border-radius: 10px;
+  background: #fbf8f1;
+  box-shadow: 0 10px 30px rgba(42, 38, 34, 0.18);
 }
 
 .modal__title {
@@ -142,6 +144,7 @@ function onKeydown(event: KeyboardEvent): void {
 }
 
 .modal__body {
+  color: #4d4842;
   margin-bottom: 16px;
 }
 

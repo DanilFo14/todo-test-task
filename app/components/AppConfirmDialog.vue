@@ -5,12 +5,22 @@
     :close-on-backdrop="true"
     @close="emit('cancel')"
   >
-    <p>{{ message }}</p>
+    <p class="confirm-text">{{ message }}</p>
     <template #actions>
-      <button type="button" data-initial-focus @click="emit('cancel')">
+      <button
+        type="button"
+        class="btn"
+        data-initial-focus
+        @click="emit('cancel')"
+      >
         {{ cancelLabel }}
       </button>
-      <button type="button" @click="emit('confirm')">
+      <button
+        type="button"
+        class="btn"
+        :class="danger ? 'btn--danger' : 'btn--primary'"
+        @click="emit('confirm')"
+      >
         {{ confirmLabel }}
       </button>
     </template>
@@ -36,3 +46,9 @@ const emit = defineEmits<{
   cancel: []
 }>()
 </script>
+
+<style lang="scss" scoped>
+.confirm-text {
+  margin: 0;
+}
+</style>

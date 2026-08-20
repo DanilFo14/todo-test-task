@@ -1,17 +1,18 @@
 <template>
   <div>
-    <section v-if="notFound">
+    <section v-if="notFound" class="missing">
       <h2>Заметка не найдена</h2>
       <p>Такой заметки нет — возможно, её удалили или ссылка устарела.</p>
-      <NuxtLink to="/">На главную</NuxtLink>
+      <NuxtLink class="btn btn--primary" to="/">На главную</NuxtLink>
     </section>
 
     <template v-else>
-      <h2>{{ isNew ? 'Новая заметка' : 'Редактирование' }}</h2>
+      <h2 class="editor-head">{{ isNew ? 'Новая заметка' : 'Редактирование' }}</h2>
 
-      <label for="note-title">Название</label>
+      <label class="sr-only" for="note-title">Название</label>
       <input
         id="note-title"
+        class="field field--title"
         type="text"
         :value="note.title"
         placeholder="Название заметки"
@@ -19,7 +20,7 @@
         @blur="onTitleBlur"
       >
 
-      <ul>
+      <ul class="todos">
         <li v-for="todo in note.todos" :key="todo.id">
           <TodoItemRow
             :todo="todo"
@@ -30,14 +31,15 @@
           />
         </li>
       </ul>
-      <button type="button" @click="addTodo">Добавить пункт</button>
 
-      <div>
-        <button type="button" @click="save">Сохранить</button>
-        <button type="button" :disabled="!canUndo" @click="undo">Отменить</button>
-        <button type="button" :disabled="!canRedo" @click="redo">Повторить</button>
-        <button type="button" @click="requestCancel">Отменить редактирование</button>
-        <button type="button" @click="deleteOpen = true">Удалить</button>
+      <button type="button" class="btn" @click="addTodo">Добавить пункт</button>
+
+      <div class="btn-row editor-actions">
+        <button type="button" class="btn btn--primary" @click="save">Сохранить</button>
+        <button type="button" class="btn" :disabled="!canUndo" @click="undo">Отменить</button>
+        <button type="button" class="btn" :disabled="!canRedo" @click="redo">Повторить</button>
+        <button type="button" class="btn" @click="requestCancel">Отменить редактирование</button>
+        <button type="button" class="btn btn--danger" @click="deleteOpen = true">Удалить</button>
       </div>
     </template>
 
@@ -86,3 +88,38 @@ const {
   confirmDelete,
 } = useNoteEditor()
 </script>
+
+<style lang="scss" scoped>
+.missing {
+  max-width: 420px;
+}
+
+.editor-head {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.todos {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.editor-actions {
+  margin-top: 20px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>
