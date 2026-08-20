@@ -16,6 +16,7 @@
         :value="note.title"
         placeholder="Название заметки"
         @input="onTitleInput"
+        @blur="onTitleBlur"
       >
 
       <ul>
@@ -33,6 +34,8 @@
 
       <div>
         <button type="button" @click="save">Сохранить</button>
+        <button type="button" :disabled="!canUndo" @click="undo">Отменить</button>
+        <button type="button" :disabled="!canRedo" @click="redo">Повторить</button>
         <button type="button" @click="requestCancel">Отменить редактирование</button>
         <button type="button" @click="deleteOpen = true">Удалить</button>
       </div>
@@ -64,14 +67,19 @@ const {
   note,
   notFound,
   isNew,
+  canUndo,
+  canRedo,
   cancelOpen,
   deleteOpen,
   onTitleInput,
+  onTitleBlur,
   onTodoText,
   onTodoBlur,
   toggleTodo,
   addTodo,
   removeTodo,
+  undo,
+  redo,
   save,
   requestCancel,
   confirmCancel,
