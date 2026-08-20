@@ -6,4 +6,10 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  app: {
+    head: {
+      htmlAttrs: { lang: 'ru' },
+      title: 'Заметки',
+    },
+  },
 })
