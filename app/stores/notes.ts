@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { cloneNote, sanitizeNote } from '../utils/note'
-import { loadState, saveState } from '../utils/storage'
-import type { Note } from '../utils/types'
+import { clearDraft as removeDraft, loadDraft, loadState, saveDraft as persistDraft, saveState } from '../utils/storage'
+import type { Draft, Note } from '../utils/types'
 
 export const useNotesStore = defineStore('notes', () => {
   const notes = ref<Note[]>([])
@@ -35,11 +35,34 @@ export const useNotesStore = defineStore('notes', () => {
   }
 
   function deleteNote(id: string): void {
-    if (!notes.value.some((note) => note.id === id)) {
+    const existed = notes.value.some((note) => note.id === id)
+    if (!existed) {
       return
     }
     notes.value = notes.value.filter((note) => note.id !== id)
     saveState(notes.value)
+
+    const draft = loadDraft()
+    if (draft && draft.noteId === id && !draft.isNew) {
+      removeDraft()
+    }
+  }
+
+  function writeDraft(draft: Draft): void {
+    persistDraft({
+      ...draft,
+      note: cloneNote(draft.note),
+      savedAt: Date.now(),
+    })
+  }
+
+  function readDraft(): Draft | null {
+    const draft = loadDraft()
+    return draft ? { ...draft, note: cloneNote(draft.note) } : null
+  }
+
+  function clearDraft(): void {
+    removeDraft()
   }
 
   return {
@@ -49,5 +72,8 @@ export const useNotesStore = defineStore('notes', () => {
     getById,
     saveNote,
     deleteNote,
+    writeDraft,
+    readDraft,
+    clearDraft,
   }
 })

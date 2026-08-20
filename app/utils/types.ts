@@ -16,5 +16,12 @@ export type PersistedState = {
   notes: Note[]
 }
 
+export type Draft = {
+  noteId: string
+  isNew: boolean
+  note: Note
+  savedAt: number
+}
+
 export const SCHEMA_VERSION = 1
 export const NEW_NOTE_ID = 'new'

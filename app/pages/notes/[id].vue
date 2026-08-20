@@ -44,6 +44,16 @@
     </template>
 
     <AppConfirmDialog
+      :open="restoreOpen"
+      title="Восстановить черновик?"
+      message="Есть несохранённые изменения с прошлого раза. Восстановить их?"
+      confirm-label="Восстановить"
+      cancel-label="Нет"
+      @confirm="restoreDraft"
+      @cancel="discardDraft"
+    />
+
+    <AppConfirmDialog
       :open="cancelOpen"
       title="Отменить редактирование?"
       message="Несохранённые изменения будут потеряны."
@@ -61,6 +71,21 @@
       @confirm="confirmDelete"
       @cancel="deleteOpen = false"
     />
+
+    <AppModal :open="goneOpen" title="Заметка удалена" :close-on-backdrop="false" @close="goHome">
+      <p v-if="goneHasEdits">
+        Эту заметку удалили в другой вкладке. Можно сохранить текущие правки как новую заметку.
+      </p>
+      <p v-else>
+        Эту заметку удалили в другой вкладке.
+      </p>
+      <template #actions>
+        <button type="button" class="btn" data-initial-focus @click="goHome">На главную</button>
+        <button v-if="goneHasEdits" type="button" class="btn btn--primary" @click="saveAsNew">
+          Сохранить как новую
+        </button>
+      </template>
+    </AppModal>
   </div>
 </template>
 
@@ -71,8 +96,11 @@ const {
   isNew,
   canUndo,
   canRedo,
+  restoreOpen,
   cancelOpen,
   deleteOpen,
+  goneOpen,
+  goneHasEdits,
   onTitleInput,
   onTitleBlur,
   onTodoText,
@@ -86,6 +114,10 @@ const {
   requestCancel,
   confirmCancel,
   confirmDelete,
+  restoreDraft,
+  discardDraft,
+  saveAsNew,
+  goHome,
 } = useNoteEditor()
 </script>
 

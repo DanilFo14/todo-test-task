@@ -1,6 +1,7 @@
-import { SCHEMA_VERSION, type Note, type PersistedState } from './types'
+import { SCHEMA_VERSION, type Draft, type Note, type PersistedState } from './types'
 
 export const DATA_KEY = 'notes-app:data'
+export const DRAFT_KEY = 'notes-app:draft'
 
 function canUseStorage(): boolean {
   return typeof localStorage !== 'undefined'
@@ -32,6 +33,39 @@ export function saveState(notes: Note[]): void {
     notes,
   }
   localStorage.setItem(DATA_KEY, JSON.stringify(payload))
+}
+
+export function loadDraft(): Draft | null {
+  if (!canUseStorage()) {
+    return null
+  }
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY)
+    if (!raw) {
+      return null
+    }
+    const draft = JSON.parse(raw) as Draft
+    if (!draft || !draft.note || typeof draft.noteId !== 'string') {
+      return null
+    }
+    return draft
+  } catch {
+    return null
+  }
+}
+
+export function saveDraft(draft: Draft): void {
+  if (!canUseStorage()) {
+    return
+  }
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
+}
+
+export function clearDraft(): void {
+  if (!canUseStorage()) {
+    return
+  }
+  localStorage.removeItem(DRAFT_KEY)
 }
 
 function migrate(raw: Partial<PersistedState>): PersistedState {
