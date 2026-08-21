@@ -1,75 +1,28 @@
-# Nuxt Minimal Starter
+# Заметки
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+SPA на Nuxt 4: список заметок и редактор со списками задач. Данные лежат в localStorage браузера.
 
-## Setup
+## Локально
 
-Make sure to install dependencies:
-
-```bash
-# npm
+```
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Приложение: http://localhost:3000
 
-Build the application for production:
+Тесты:
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```
+npm test
 ```
 
-Locally preview production build:
+Сборка статики: `npm run generate`
 
-```bash
-# npm
-npm run preview
+## Docker
 
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+```
+docker-compose up --build
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Откройте http://localhost:3000
